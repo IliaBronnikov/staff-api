@@ -25,7 +25,7 @@ SECRET_KEY = "jrihl+ht7p97fh+9pl=rg8fq$$5-n9f_(0wa4$iwq8118&^j4d"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", True)
 
-ALLOWED_HOSTS = ["127.0.0.1"]
+ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 
 
 # Application definition
