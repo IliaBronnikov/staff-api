@@ -1,23 +1,11 @@
 ### Установка проекта
 
-- установить версию python 3.8
-- создать виртуальное окружение 
-```shell script
-python3.8 -m venv venv
+- Собрать образ 
 ```
-- активировать виртуальное окружение
-```shell script
-source venv/bin/activate
+docker-compose up
 ```
-- установить зависимости
-```shell script
-pip install -r requirements.txt
-```
-- запустить
-```shell script
-./manage.py runserver
-```
-- открыть в браузере http://localhost:8000 
+- Образ postgres работает на порту 5432
+- Сервис доступен по адресу http://127.0.0.1:8000/
 
 ### Документация по API
 #### Endpoints:
