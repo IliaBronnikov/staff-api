@@ -1,5 +1,6 @@
 from django.db.models import Count, Sum
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import viewsets
 from rest_framework.generics import (
     ListAPIView,
     ListCreateAPIView,
@@ -8,8 +9,8 @@ from rest_framework.generics import (
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated
 
-from staff.models import Staff, Department
-from staff.serializers import StaffSerializer, DepartmentSerializer
+from staff.models import Staff, Department, Project
+from staff.serializers import StaffSerializer, DepartmentSerializer, DepartmentListSerializer, ProjectSerializer
 
 
 class StaffPagination(LimitOffsetPagination):
@@ -31,11 +32,18 @@ class StaffRetrieveDestroyAPIView(RetrieveDestroyAPIView):
     queryset = Staff.objects.all()
 
 
-class DepartmentListAPIView(ListAPIView):
-    serializer_class = DepartmentSerializer
+class DepartmentListAPIView(viewsets.ReadOnlyModelViewSet):
+    def get_serializer_class(self):
+        if self.action == "list":
+            return DepartmentListSerializer
+        return DepartmentSerializer
 
     def get_queryset(self):
-        return Department.objects.all().annotate(
-            staff_count=Count("staff"),
-            total_salary=Sum("staff__salary"),
-        )
+        if self.action == "list":
+            return Department.objects.all().annotate(
+                staff_count=Count("staff"),
+                total_salary=Sum("staff__salary"),
+            )
+        return Department.objects.all()
+
+

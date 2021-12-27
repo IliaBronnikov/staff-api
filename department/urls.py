@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, re_path
+from rest_framework.routers import DefaultRouter
 
 from staff.views import (
     DepartmentListAPIView,
@@ -33,6 +34,10 @@ schema_view = get_schema_view(
     permission_classes=(permissions.AllowAny,),
 )
 
+router = DefaultRouter()
+router.register(r"department", DepartmentListAPIView, basename="department")
+
+
 urlpatterns = [
     path("admin/", admin.site.urls, name="admin"),
     path("staff/", StaffListCreateAPIView.as_view(), name="staff_list_create"),
@@ -41,7 +46,7 @@ urlpatterns = [
         StaffRetrieveDestroyAPIView.as_view(),
         name="staff_retrieve_delete",
     ),
-    path("department/", DepartmentListAPIView.as_view(), name="department_list"),
+    *router.urls,
     re_path(
         r"^swagger(?P<format>\.json|\.yaml)$",
         schema_view.without_ui(cache_timeout=0),
@@ -52,4 +57,5 @@ urlpatterns = [
         schema_view.with_ui("swagger", cache_timeout=0),
         name="schema-swagger-ui",
     ),
+
 ]
